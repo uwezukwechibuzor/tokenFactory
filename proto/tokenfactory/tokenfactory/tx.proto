@@ -10,7 +10,6 @@ option go_package = "tokenfactory/x/tokenfactory/types";
 service Msg {
   rpc CreateDenom (MsgCreateDenom) returns (MsgCreateDenomResponse);
   rpc UpdateDenom (MsgUpdateDenom) returns (MsgUpdateDenomResponse);
-  rpc DeleteDenom (MsgDeleteDenom) returns (MsgDeleteDenomResponse);
 }
 message MsgCreateDenom {
   string owner              = 1;
@@ -40,10 +39,4 @@ message MsgUpdateDenom {
 
 message MsgUpdateDenomResponse {}
 
-message MsgDeleteDenom {
-  string owner = 1;
-  string denom = 2;
-}
-
-message MsgDeleteDenomResponse {}
 
