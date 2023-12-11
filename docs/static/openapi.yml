@@ -75437,9 +75437,11 @@ definitions:
         type: string
   tokenfactory.tokenfactory.MsgCreateDenomResponse:
     type: object
-  tokenfactory.tokenfactory.MsgDeleteDenomResponse:
+  tokenfactory.tokenfactory.MsgMintAndSendTokensResponse:
     type: object
   tokenfactory.tokenfactory.MsgUpdateDenomResponse:
+    type: object
+  tokenfactory.tokenfactory.MsgUpdateOwnerResponse:
     type: object
   tokenfactory.tokenfactory.Params:
     type: object

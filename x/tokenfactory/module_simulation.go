@@ -35,6 +35,14 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteDenom int = 100
 
+	opWeightMsgMintAndSendTokens = "op_weight_msg_mint_and_send_tokens"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgMintAndSendTokens int = 100
+
+	opWeightMsgUpdateOwner = "op_weight_msg_update_owner"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateOwner int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -106,6 +114,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		tokenfactorysimulation.SimulateMsgDeleteDenom(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgMintAndSendTokens int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgMintAndSendTokens, &weightMsgMintAndSendTokens, nil,
+		func(_ *rand.Rand) {
+			weightMsgMintAndSendTokens = defaultWeightMsgMintAndSendTokens
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgMintAndSendTokens,
+		tokenfactorysimulation.SimulateMsgMintAndSendTokens(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateOwner int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateOwner, &weightMsgUpdateOwner, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateOwner = defaultWeightMsgUpdateOwner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateOwner,
+		tokenfactorysimulation.SimulateMsgUpdateOwner(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -135,6 +165,22 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgDeleteDenom,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				tokenfactorysimulation.SimulateMsgDeleteDenom(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgMintAndSendTokens,
+			defaultWeightMsgMintAndSendTokens,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				tokenfactorysimulation.SimulateMsgMintAndSendTokens(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgUpdateOwner,
+			defaultWeightMsgUpdateOwner,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				tokenfactorysimulation.SimulateMsgUpdateOwner(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),
